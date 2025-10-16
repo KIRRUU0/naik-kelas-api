@@ -8,15 +8,21 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('paket_kemitraan', function (Blueprint $table) {
-            $table->id();
-            // Menambahkan 3 kolom yang dibutuhkan Controller
-            $table->string('nama_paket', 255);
-            $table->text('deskripsi');
-            $table->string('gambar', 255)->after('nama_paket');
-            $table->integer('status')->after('deskripsi');
-        });
-    }
+    Schema::create('paket_kemitraan', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('kategori_id'); // Ditambahkan
+        $table->string('nama_paket', 255);
+        $table->string('gambar', 255);
+        $table->text('deskripsi');
+        $table->text('fitur_unggulan'); // Ditambahkan (Diasumsikan TEXT, periksa tipe data Anda)
+        $table->integer('harga'); // Ditambahkan (Diasumsikan INTEGER, periksa tipe data Anda)
+        $table->integer('status'); 
+        $table->string('url_cta', 255); // Ditambahkan
+
+        // Tambahkan foreign key jika Anda menggunakan relasi antar tabel:
+        // $table->foreign('kategori_id')->references('id')->on('kategori_bisnis');
+    });
+}
 
     public function down(): void
     {

@@ -20,4 +20,9 @@ class Webinar extends Model
         'url_cta',
     ];
     public $timestamps = false;
+
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriBisnis::class, 'kategori_id');
+    }
 }

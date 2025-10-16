@@ -8,11 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('kategori_bisnis', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_kategori', 50);
-        });
-    }
+    Schema::create('kategori_bisnis', function (Blueprint $table) {
+        $table->id();
+        $table->integer('kategori_id')->unique(); // Ditambahkan: Harus unik sesuai kebutuhan
+        $table->string('nama_kategori', 50);
+        $table->string('gambar', 255); // Ditambahkan
+        $table->text('deskripsi'); // Ditambahkan
+    });
+}
 
     public function down(): void
     {

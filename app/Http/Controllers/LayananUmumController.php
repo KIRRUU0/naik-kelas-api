@@ -26,6 +26,7 @@ class LayananUmumController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'kategori_id' => 'required|integer',
             'judul_layanan' => 'required',
             'deskripsi' => 'required',
             'highlight' => 'required',
@@ -59,6 +60,7 @@ class LayananUmumController extends Controller
     public function update(Request $request, LayananUmum $layananUmum) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
+            'kategori_id' => 'sometimes|required|integer',
             'judul_layanan' => 'required',
             'deskripsi' => 'required',
             'highlight' => 'required',

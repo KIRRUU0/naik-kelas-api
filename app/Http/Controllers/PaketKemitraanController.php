@@ -26,11 +26,13 @@ class PaketKemitraanController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'kategori_id' => 'required',
+            'kategori_id' => 'required|integer',
             'nama_paket' => 'required',
             'gambar' => 'required',
             'deskripsi' => 'required',
-            'status' => 'required',
+            'fitur_unggulan' => 'required',
+            'harga' => 'required|integer',
+            'status' => 'required|integer',
             'url_cta' => 'required',
         ]);
         if ($validator->fails()) {

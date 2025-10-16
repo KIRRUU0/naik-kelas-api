@@ -52,7 +52,7 @@ class PenggunaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $pengguna) // Laravel sudah menemukan modelnya
+    public function show(Pengguna $pengguna) // Laravel sudah menemukan modelnya
     {
         return response()->json([
             "message" => "Data pengguna berhasil diambil",
@@ -63,7 +63,7 @@ class PenggunaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $pengguna)
+    public function update(Request $request, Pengguna $pengguna)
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'sometimes|required',

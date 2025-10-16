@@ -26,13 +26,13 @@ class MitraBrokerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'tipe_broker' => 'required',
-            'kategori_id' => 'required',
+            'tipe_broker' => 'required|integer',
+            'kategori_id' => 'required|integer',
             'judul_broker' => 'required', // FIX: Menambahkan validasi field 'judul_broker'
             'gambar' => 'required',
             'nama_kategori' => 'required',
             'deskripsi' => 'required',
-            'fitur_unggulan' => 'required',
+            'fitur_unggulan' => 'required|integer',
             'url_cta' => 'required',
         ]);
         if ($validator->fails()) {
@@ -64,13 +64,13 @@ class MitraBrokerController extends Controller
     public function update(Request $request, MitraBroker $mitraBroker) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
-            'tipe_broker' => 'required',
-            'kategori_id' => 'required',
+            'tipe_broker' => 'required|integer',
+            'kategori_id' => 'required|integer',
             'judul_broker' => 'required', // FIX: Menambahkan validasi field 'judul_broker'
             'gambar' => 'required',
             'nama_kategori' => 'required',
             'deskripsi' => 'required',
-            'fitur_unggulan' => 'required',
+            'fitur_unggulan' => 'required|integer',
             'url_cta' => 'required',
         ]);
         if ($validator->fails()) {
