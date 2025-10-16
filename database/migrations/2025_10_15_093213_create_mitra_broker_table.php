@@ -6,23 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('mitra_broker', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_mitra');
-            $table->string('logo_mitra');
-            $table->string('url_website');
-            // $table->timestamps();
+            $table->integer('tipe_broker');
+            $table->unsignedBigInteger('kategori_id');
+            $table->string('judul_broker', 255);
+            $table->string('gambar', 255);
+            $table->string('nama_kategori', 125);
+            $table->text('deskripsi');
+            $table->integer('fitur_unggulan');
+            $table->string('url_cta', 255);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('mitra_broker');

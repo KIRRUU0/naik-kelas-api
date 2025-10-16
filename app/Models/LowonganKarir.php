@@ -14,6 +14,7 @@ class LowonganKarir extends Model
     protected $fillable = [
         'posisi',
         'status',
+        'posisi',
         'deskripsi',
         'url_cta',
     ];

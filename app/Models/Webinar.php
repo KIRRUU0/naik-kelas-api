@@ -18,8 +18,6 @@ class Webinar extends Model
         'tanggal_acara',
         'waktu_mulai',
         'url_cta',
-        'created_at',
-        'updated_at',
     ];
     public $timestamps = false;
 }

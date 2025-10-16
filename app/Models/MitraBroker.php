@@ -11,9 +11,9 @@ class MitraBroker extends Model
 
     protected $table = 'mitra_broker';
     protected $fillable = [
-        'id',
         'tipe_broker',
         'kategori_id',
+        'judul_broker',
         'gambar',
         'nama_kategori',
         'deskripsi',

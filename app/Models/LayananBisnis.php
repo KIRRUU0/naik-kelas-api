@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ModulBisnis extends Model
+class LayananBisnis extends Model
 {
     use HasFactory;
 
-    protected $table = 'modul_bisnis';
+    protected $table = 'layanan_bisnis';
     protected $fillable = [
         'kategori_id',
         'judul_bisnis',
@@ -18,4 +18,9 @@ class ModulBisnis extends Model
         'url_cta',
     ];
     public $timestamps = false;
+
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriBisnis::class, 'kategori_id');
+    }
 }

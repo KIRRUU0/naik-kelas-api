@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash; //untuk enkripsi password
+use Illuminate\Support\Facades\Hash; 
 
 class PenggunaController extends Controller
 {
@@ -14,13 +14,11 @@ class PenggunaController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $users_safe = $users->map(function($user) {
-            return $user->makeHidden(['password']);
-        });
+        // Mengandalkan properti $hidden di Model User untuk menyembunyikan password
+        $pengguna = Pengguna::all();
         return response()->json([
             "message" => "Data pengguna berhasil diambil",
-            "data" => $users_safe
+            "data" => $pengguna
         ], 200);
     }
 
@@ -30,15 +28,19 @@ class PenggunaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'role' => 'required|max:255',
+            'foto_profil' => 'nullable|url',
             'nama' => 'required|max:255',
             'email' => 'required|email|unique:pengguna,email',
             'password' => 'required|min:6',
         ]);
 
-        $user = User::create([
+        $user = Pengguna::create([
+            'role' => $validatedData['role'],
+            'foto_profil' => $validatedData['foto_profil'] ?? null,
             'nama' => $validatedData['nama'],
             'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']), // HASHING
+            'password' => Hash::make($validatedData['password']),
         ]);
 
         return response()->json([
@@ -50,36 +52,25 @@ class PenggunaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $id)
+    public function show(User $pengguna) // Laravel sudah menemukan modelnya
     {
-        $user = User::find($id->id);
-
-        if (is_null($user)) {
-            return response()->json([
-                "message" => "Data pengguna tidak ditemukan"
-            ], 404);
-        }
         return response()->json([
             "message" => "Data pengguna berhasil diambil",
-            "data" => $user->makeHidden(['password'])
+            "data" => $pengguna
         ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $id)
+    public function update(Request $request, User $pengguna)
     {
-        $user = User::find($id->id);
-        if (is_null($user)) {
-            return response()->json([
-                "message" => "Data pengguna tidak ditemukan"
-            ], 404);
-        }
-
         $validator = Validator::make($request->all(), [
             'nama' => 'sometimes|required',
-            'email' => 'sometimes|required|email|unique:users,email,'.$user->id,
+            'role' => 'sometimes|required|max:255',
+            'foto_profil' => 'sometimes|nullable|url',
+            // FIX: Menggunakan tabel 'pengguna' yang benar
+            'email' => 'sometimes|required|email|unique:pengguna,email,'.$pengguna->id, 
             'password' => 'sometimes|required|min:6',
         ]);
 
@@ -88,29 +79,23 @@ class PenggunaController extends Controller
         }
 
         if ($request->has('password')) {
-            $request->merge(['password' => Hash::make($request->password)]); //enkripsi password
+            $request->merge(['password' => Hash::make($request->password)]); 
         }
 
-        $user->update($request->all());
+        $pengguna->update($request->all());
 
         return response()->json([
             "message" => "Data pengguna berhasil diupdate",
-            "data" => $user->makeHidden(['password'])
+            "data" => $pengguna
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(User $pengguna)
     {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json([
-                "message" => "Data pengguna tidak ditemukan"
-            ], 404);
-        }
-        $user->delete();
+        $pengguna->delete(); // Langsung delete model yang sudah di-bind
         return response()->json([
             "message" => "Data pengguna berhasil dihapus"
         ], 200);

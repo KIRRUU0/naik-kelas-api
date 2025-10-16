@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class LayananUmum extends Model
+class Home extends Model
 {
     use HasFactory;
 
-    protected $table = 'layanan_umum';
+    public $timestamps = false;
+    protected $table = 'home';
     protected $fillable = [
-        'kategori_id',
-        'judul_layanan',
-        'deskripsi',
-        'highlight',
+        'tagline_home',
+        'deskripsi_home',
+        'gambar_home',
         'url_cta',
     ];
-    public $timestamps = false;
 }

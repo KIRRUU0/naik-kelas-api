@@ -4,10 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\Pengguna as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Pengguna extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
@@ -19,6 +19,8 @@ class User extends Authenticatable
      */
     protected $table = 'pengguna';
     protected $fillable = [
+        'role',
+        'foto_profil',
         'nama',
         'email',
         'password',
@@ -31,7 +33,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        
+        'password',
     ];
 
     /**

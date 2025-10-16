@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ModulBisnis;
+use App\Models\LayananBisnis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ModulBisnisController extends Controller
+class LayananBisnisController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $moduls = ModulBisnis::all();
+        $modul = LayananBisnis::with('kategori')->get();
         return response()->json([
         "message" => "Data modul bisnis berhasil diambil",
-        "data" => $moduls
+        "data" => $modul
         ], 200);
     }
 
@@ -36,7 +36,7 @@ class ModulBisnisController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $modul = ModulBisnis::create($request->all());
+        $modul = LayananBisnis::create($request->all());
 
         return response()->json([
             "message" => "Data modul bisnis berhasil ditambahkan",
@@ -47,9 +47,9 @@ class ModulBisnisController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ModulBisnis $modulBisnis)
+    public function show(LayananBisnis $layananBisnis)
     {
-        $modul = ModulBisnis::find($modulBisnis->id);
+        $modul = LayananBisnis::find($layananBisnis->id);
 
         if (is_null($modul)) {
             return response()->json([
@@ -68,7 +68,7 @@ class ModulBisnisController extends Controller
      */
     public function update(Request $request, ModulBisnis $modulBisnis)
     {
-        $modul = ModulBisnis::find($modulBisnis->id);
+        $modul = LayananBisnis::find($layananBisnis->id);
         if (is_null($modul)) {
             return response()->json([
                 "message" => "Data modul bisnis tidak ditemukan"
@@ -98,9 +98,9 @@ class ModulBisnisController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ModulBisnis $modulBisnis)
+    public function destroy(LayananBisnis $layananBisnis)
     {
-        $modul = ModulBisnis::find($modulBisnis->id);
+        $modul = LayananBisnis::find($layananBisnis->id);
         if (is_null($modul)) {
             return response()->json([
                 "message" => "Data modul bisnis tidak ditemukan"

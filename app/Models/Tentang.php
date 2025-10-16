@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class LayananUmum extends Model
-{
-    use HasFactory;
 
-    protected $table = 'layanan_umum';
+class Tentang extends Model
+{
+    protected $table = 'tentang';
     protected $fillable = [
-        'kategori_id',
-        'judul_layanan',
+        'judul',
+        'sub_judul',
         'deskripsi',
-        'highlight',
-        'url_cta',
+        'gambar',
     ];
     public $timestamps = false;
 }
