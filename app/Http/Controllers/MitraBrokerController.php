@@ -26,9 +26,9 @@ class MitraBrokerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
             'tipe_broker' => 'required',
             'kategori_id' => 'required',
+            'judul_broker' => 'required', // FIX: Menambahkan validasi field 'judul_broker'
             'gambar' => 'required',
             'nama_kategori' => 'required',
             'deskripsi' => 'required',
@@ -49,15 +49,9 @@ class MitraBrokerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MitraBroker $mitraBroker)
+    public function show(MitraBroker $mitraBroker) // RMD aktif
     {
-        $mitraBroker = MitraBroker::find($mitraBroker->id);
-
-        if (is_null($mitraBroker)) {
-            return response()->json([
-                "message" => "Data mitra broker tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         return response()->json([
             "message" => "Data mitra broker berhasil diambil",
             "data" => $mitraBroker
@@ -67,12 +61,12 @@ class MitraBrokerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MitraBroker $mitraBroker)
+    public function update(Request $request, MitraBroker $mitraBroker) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
             'tipe_broker' => 'required',
             'kategori_id' => 'required',
+            'judul_broker' => 'required', // FIX: Menambahkan validasi field 'judul_broker'
             'gambar' => 'required',
             'nama_kategori' => 'required',
             'deskripsi' => 'required',
@@ -92,14 +86,9 @@ class MitraBrokerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MitraBroker $mitraBroker)
+    public function destroy(MitraBroker $mitraBroker) // RMD aktif
     {
-        $mitraBroker = MitraBroker::find($mitraBroker->id);
-        if (is_null($mitraBroker)) {
-            return response()->json([
-                "message" => "Data mitra broker tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         $mitraBroker->delete();
         return response()->json([
             "message" => "Data mitra broker berhasil dihapus"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriBisnis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator; // FIX: Menambahkan Validator yang hilang
 
 class KategoriBisnisController extends Controller
 {
@@ -30,20 +31,24 @@ class KategoriBisnisController extends Controller
             'nama_kategori' => 'required',
             'deskripsi' => 'required',
         ]);
+        
+        if ($validator->fails()) { // FIX: Menambahkan logic store yang hilang
+            return response()->json($validator->errors(), 422);
+        }
+        
+        $kategoriBisnis = KategoriBisnis::create($request->all());
+        return response()->json([
+            "message" => "Data kategori bisnis berhasil ditambahkan",
+            "data" => $kategoriBisnis
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(KategoriBisnis $kategoriBisnis)
+    public function show(KategoriBisnis $kategoriBisnis) // RMD aktif
     {
-        $kategoriBisnis = KategoriBisnis::find($kategoriBisnis->id);
-
-        if (is_null($kategoriBisnis)) {
-            return response()->json([
-                "message" => "Data kategori bisnis tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         return response()->json([
             "message" => "Data kategori bisnis berhasil diambil",
             "data" => $kategoriBisnis
@@ -53,14 +58,13 @@ class KategoriBisnisController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, KategoriBisnis $kategoriBisnis)
+    public function update(Request $request, KategoriBisnis $kategoriBisnis) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
             'kategori_id' => 'sometimes|required|integer',
             'gambar' => 'sometimes|required',
             'nama_kategori' => 'sometimes|required',
             'deskripsi' => 'sometimes|required',
-            'gambar' => 'sometimes|required',
         ]);
 
         if ($validator->fails()) {
@@ -78,7 +82,7 @@ class KategoriBisnisController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(KategoriBisnis $kategoriBisnis)
+    public function destroy(KategoriBisnis $kategoriBisnis) // RMD aktif
     {
         $kategoriBisnis->delete();
         return response()->json([

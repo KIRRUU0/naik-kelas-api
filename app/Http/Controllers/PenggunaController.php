@@ -71,7 +71,7 @@ class PenggunaController extends Controller
             'foto_profil' => 'sometimes|nullable|url',
             // FIX: Menggunakan tabel 'pengguna' yang benar
             'email' => 'sometimes|required|email|unique:pengguna,email,'.$pengguna->id, 
-            'password' => 'sometimes|required|min:6',
+            'password' => 'sometimes|required|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {
@@ -93,7 +93,7 @@ class PenggunaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $pengguna)
+    public function destroy(Pengguna $pengguna)
     {
         $pengguna->delete(); // Langsung delete model yang sudah di-bind
         return response()->json([

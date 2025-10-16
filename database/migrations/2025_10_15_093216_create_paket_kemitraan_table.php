@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('paket_kemitraan', function (Blueprint $table) {
             $table->id();
+            // Menambahkan 3 kolom yang dibutuhkan Controller
             $table->string('nama_paket', 255);
             $table->text('deskripsi');
-            $table->string('fitur_unggulan', 255);
-            $table->decimal('harga', 10, 2);
-            $table->string('url_cta', 255);
+            $table->string('gambar', 255)->after('nama_paket');
+            $table->integer('status')->after('deskripsi');
         });
     }
 

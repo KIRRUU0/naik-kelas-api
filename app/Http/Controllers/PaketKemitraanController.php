@@ -46,15 +46,9 @@ class PaketKemitraanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PaketKemitraan $paketKemitraan)
+    public function show(PaketKemitraan $paketKemitraan) // RMD aktif
     {
-        $paketKemitraan = PaketKemitraan::find($paketKemitraan->id);
-
-        if (is_null($paketKemitraan)) {
-            return response()->json([
-                "message" => "Data paket kemitraan tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         return response()->json([
             "message" => "Data paket kemitraan berhasil diambil",
             "data" => $paketKemitraan
@@ -64,7 +58,7 @@ class PaketKemitraanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PaketKemitraan $paketKemitraan)
+    public function update(Request $request, PaketKemitraan $paketKemitraan) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
             'kategori_id' => 'required',
@@ -77,12 +71,8 @@ class PaketKemitraanController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $paketKemitraan = PaketKemitraan::find($paketKemitraan->id);
-        if (is_null($paketKemitraan)) {
-            return response()->json([
-                "message" => "Data paket kemitraan tidak ditemukan"
-            ], 404);
-        }
+        
+        // Query redundan dihapus
         $paketKemitraan->update($request->all());
         return response()->json([
             "message" => "Data paket kemitraan berhasil diupdate",
@@ -93,14 +83,9 @@ class PaketKemitraanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PaketKemitraan $paketKemitraan)
+    public function destroy(PaketKemitraan $paketKemitraan) // RMD aktif
     {
-        $paketKemitraan = PaketKemitraan::find($paketKemitraan->id);
-        if (is_null($paketKemitraan)) {
-            return response()->json([
-                "message" => "Data paket kemitraan tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         $paketKemitraan->delete();
         return response()->json([
             "message" => "Data paket kemitraan berhasil dihapus"

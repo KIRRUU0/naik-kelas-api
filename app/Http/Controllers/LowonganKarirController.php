@@ -44,15 +44,9 @@ class LowonganKarirController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LowonganKarir $lowonganKarir)
+    public function show(LowonganKarir $lowonganKarir) // RMD aktif
     {
-        $lowonganKarir = LowonganKarir::find($lowonganKarir->id);
-
-        if (is_null($lowonganKarir)) {
-            return response()->json([
-                "message" => "Data lowongan karir tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         return response()->json([
             "message" => "Data lowongan karir berhasil diambil",
             "data" => $lowonganKarir
@@ -62,7 +56,7 @@ class LowonganKarirController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LowonganKarir $lowonganKarir)
+    public function update(Request $request, LowonganKarir $lowonganKarir) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
             'posisi' => 'required',
@@ -83,14 +77,9 @@ class LowonganKarirController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LowonganKarir $lowonganKarir)
+    public function destroy(LowonganKarir $lowonganKarir) // RMD aktif
     {
-        $lowonganKarir = LowonganKarir::find($lowonganKarir->id);
-        if (is_null($lowonganKarir)) {
-            return response()->json([
-                "message" => "Data lowongan karir tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         $lowonganKarir->delete();
         return response()->json([
             "message" => "Data lowongan karir berhasil dihapus"

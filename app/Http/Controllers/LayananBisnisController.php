@@ -47,33 +47,22 @@ class LayananBisnisController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LayananBisnis $layananBisnis)
+    public function show(LayananBisnis $layananBisnis) // RMD aktif
     {
-        $modul = LayananBisnis::find($layananBisnis->id);
-
-        if (is_null($modul)) {
-            return response()->json([
-                "message" => "Data modul bisnis tidak ditemukan"
-            ], 404);
-        }
-
+        $layananBisnis->load('kategori'); // Memuat relasi
+        
         return response()->json([
             "message" => "Data modul bisnis berhasil diambil",
-            "data" => $modul
+            "data" => $layananBisnis
         ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ModulBisnis $modulBisnis)
+    public function update(Request $request, LayananBisnis $layananBisnis) // PERBAIKAN: Mengganti parameter model yang salah
     {
-        $modul = LayananBisnis::find($layananBisnis->id);
-        if (is_null($modul)) {
-            return response()->json([
-                "message" => "Data modul bisnis tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
 
         $validator = Validator::make($request->all(), [
             'kategori_id' => 'required',
@@ -87,26 +76,20 @@ class LayananBisnisController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $modul->update($request->all());
+        $layananBisnis->update($request->all()); // Menggunakan model yang sudah di-bind
 
         return response()->json([
             "message" => "Data modul bisnis berhasil diupdate",
-            "data" => $modul
+            "data" => $layananBisnis
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LayananBisnis $layananBisnis)
+    public function destroy(LayananBisnis $layananBisnis) // RMD aktif
     {
-        $modul = LayananBisnis::find($layananBisnis->id);
-        if (is_null($modul)) {
-            return response()->json([
-                "message" => "Data modul bisnis tidak ditemukan"
-            ], 404);
-        }
-        $modul->delete();
+        $layananBisnis->delete();
         return response()->json([
             "message" => "Data modul bisnis berhasil dihapus"
         ], 200);

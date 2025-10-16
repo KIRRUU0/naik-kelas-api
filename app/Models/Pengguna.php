@@ -2,22 +2,25 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\Pengguna as Authenticatable;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; 
 
 class Pengguna extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<PenggunaFactory> */
     use HasFactory;
 
+    /**
+     * Nama tabel kustom yang Anda gunakan.
+     * (Menunjuk ke tabel 'pengguna' Anda, bukan 'users').
+     */
+    protected $table = 'pengguna'; 
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $table = 'pengguna';
     protected $fillable = [
         'role',
         'foto_profil',
@@ -25,7 +28,7 @@ class Pengguna extends Authenticatable
         'email',
         'password',
     ];
-    public $timestamps = false;
+    public $timestamps = false; // Tetap sesuai setup Anda
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,7 +45,7 @@ class Pengguna extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        // FIX: Hapus 'email_verified_at' jika kolom ini tidak ada di tabel 'pengguna' Anda
         'password' => 'hashed',
     ];
 }

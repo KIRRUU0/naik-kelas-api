@@ -45,15 +45,9 @@ class TentangController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tentang $tentang)
+    public function show(Tentang $tentang) // RMD aktif
     {
-        $tentang = Tentang::find($tentang->id);
-
-        if (is_null($tentang)) {
-            return response()->json([
-                "message" => "Data tentang tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         return response()->json([
             "message" => "Data tentang berhasil diambil",
             "data" => $tentang
@@ -63,7 +57,7 @@ class TentangController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tentang $tentang)
+    public function update(Request $request, Tentang $tentang) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'sometimes|required',
@@ -87,7 +81,7 @@ class TentangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tentang $tentang)
+    public function destroy(Tentang $tentang) // RMD aktif
     {
         $tentang->delete();
         return response()->json([

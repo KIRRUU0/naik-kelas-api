@@ -11,10 +11,10 @@ class LowonganKarir extends Model
 
     public $timestamps = false;
     protected $table = 'lowongan_karir';
+    
     protected $fillable = [
         'posisi',
         'status',
-        'posisi',
         'deskripsi',
         'url_cta',
     ];

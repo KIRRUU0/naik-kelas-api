@@ -11,10 +11,11 @@ class Home extends Model
 
     public $timestamps = false;
     protected $table = 'home';
+    
     protected $fillable = [
-        'tagline_home',
-        'deskripsi_home',
-        'gambar_home',
+        'tagline_brand',
+        'deskripsi_brand',
+        'gambar_brand',
         'url_cta',
     ];
 }

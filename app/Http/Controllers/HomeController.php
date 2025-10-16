@@ -16,14 +16,14 @@ class HomeController extends Controller
         // Ambil data home, asumsikan hanya ada satu record
         $home = Home::all();
         
-        // Jika data belum ada, kembalikan null agar frontend tahu
-        if (is_null($home)) {
+        if ($home->isEmpty()) {
             return response()->json([
                 "message" => "Pengaturan Home belum diinisialisasi",
                 "data" => null
             ], 200);
         }
 
+        
         return response()->json([
             "message" => "Data home berhasil diambil",
             "data" => $home
@@ -53,9 +53,10 @@ class HomeController extends Controller
         ]));
 
         return response()->json([
-            "message" => "Data home berhasil dibuat",
+            "message" => "Pengaturan Home berhasil diinisialisasi",
             "data" => $home
         ], 201);
+        
     }
 
     /**
@@ -63,13 +64,6 @@ class HomeController extends Controller
      */
     public function show(Home $home)
     {
-        $home = Home::first()($home->id);
-
-        if (is_null($home)) {
-            return response()->json([
-                "message" => "Data home tidak ditemukan"
-            ], 404);
-        }
         return response()->json([
             "message" => "Data home berhasil diambil",
             "data" => $home
@@ -93,7 +87,6 @@ class HomeController extends Controller
         }
 
         // Cari data pertama (ID 1), jika ada perbarui, jika tidak ada buat baru.
-        // Ini adalah pola terbaik untuk data singleton.
         $home = Home::updateOrCreate(
             ['id' => 1],
             $request->only([
@@ -113,14 +106,9 @@ class HomeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Home $home)
+    public function destroy(Home $home) // RMD aktif
     {
-        $home = Home::find($home->id);
-        if (is_null($home)) {
-            return response()->json([
-                "message" => "Data home tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         $home->delete();
         return response()->json([
             "message" => "Data home berhasil dihapus"

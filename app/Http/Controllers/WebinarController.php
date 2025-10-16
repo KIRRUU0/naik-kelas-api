@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Webinar;
 use Illuminate\Http\Request;
 use Illuminate\support\Facades\Validator;
+use DB; // Menggunakan DB untuk fungsi statistik
 
 class WebinarController extends Controller
 {
@@ -50,15 +51,9 @@ class WebinarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Webinar $webinar)
+    public function show(Webinar $webinar) // RMD aktif
     {
-        $webinar = Webinar::find($webinar->id);
-
-        if (is_null($webinar)) {
-            return response()->json([
-                "message" => "Data webinar tidak ditemukan"
-            ], 404);
-        }
+        // Logic find() dan is_null() otomatis ditangani oleh RMD
         return response()->json([
             "message" => "Data webinar berhasil diambil",
             "data" => $webinar
@@ -68,14 +63,8 @@ class WebinarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Webinar $webinar)
+    public function update(Request $request, Webinar $webinar) // RMD aktif
     {
-        $webinar = Webinar::find($webinar->id);
-        if (is_null($webinar)) {
-            return response()->json([
-                "message" => "Data webinar tidak ditemukan"
-            ], 404);
-        }
         $validator = Validator::make($request->all(), [
             'kategori_id' => 'required',
             'status_acara' => 'required',
@@ -88,7 +77,7 @@ class WebinarController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $webinar->update($request->all());
+        $webinar->update($request->all()); // Langsung update model yang sudah di-bind
         return response()->json([
             "message" => "Data webinar berhasil diupdate",
             "data" => $webinar
@@ -98,15 +87,9 @@ class WebinarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Webinar $webinar)
+    public function destroy(Webinar $webinar) // RMD aktif
     {
-        $webinar = Webinar::find($webinar->id);
-        if (is_null($webinar)) {
-            return response()->json([
-                "message" => "Data webinar tidak ditemukan"
-            ], 404);
-        }
-        $webinar->delete();
+        $webinar->delete(); // Langsung delete model yang sudah di-bind
         return response()->json([
             "message" => "Data webinar berhasil dihapus"
         ], 200);
@@ -120,9 +103,11 @@ class WebinarController extends Controller
         return response()->json([
             'label' => ['Selesai', 'Sedang Berlangsung', 'Akan Datang'],
             'message' => 'Statistik status acara webinar',
-            'data' => [$data_status->where('status_acara', 0)->first()->total ?? 0, 
-                   $data_status->where('status_acara', 1)->first()->total ?? 0,
-                   $data_status->where('status_acara', 2)->first()->total ?? 0]
-    ], 200);
+            'data' => [
+                   $data_status->where('status_acara', 0)->first()->total ?? 0, 
+                   $data_status->where('status_acara', 1)->first()->total ?? 0, 
+                   $data_status->where('status_acara', 2)->first()->total ?? 0
+            ]
+        ], 200);
     }
 }

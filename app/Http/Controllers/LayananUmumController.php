@@ -44,15 +44,9 @@ class LayananUmumController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LayananUmum $layananUmum)
+    public function show(LayananUmum $layananUmum) // RMD aktif
     {
-        $layananUmum = LayananUmum::find($layananUmum->id);
-
-        if (is_null($layananUmum)) {
-            return response()->json([
-                "message" => "Data layanan umum tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         return response()->json([
             "message" => "Data layanan umum berhasil diambil",
             "data" => $layananUmum
@@ -62,7 +56,7 @@ class LayananUmumController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LayananUmum $layananUmum)
+    public function update(Request $request, LayananUmum $layananUmum) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
             'judul_layanan' => 'required',
@@ -75,14 +69,8 @@ class LayananUmumController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $layananUmum = LayananUmum::find($layananUmum->id);
-        if (is_null($layananUmum)) {
-            return response()->json([
-                "message" => "Data layanan umum tidak ditemukan"
-            ], 404);
-        }
-
-        $layananUmum->update($request->all());
+        // Query redundan dihapus
+        $layananUmum->update($request->all()); // Langsung update model yang sudah di-bind
         return response()->json([
             "message" => "Data layanan umum berhasil diupdate",
             "data" => $layananUmum
@@ -92,14 +80,9 @@ class LayananUmumController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LayananUmum $layananUmum)
+    public function destroy(LayananUmum $layananUmum) // RMD aktif
     {
-        $layananUmum = LayananUmum::find($layananUmum->id);
-        if (is_null($layananUmum)) {
-            return response()->json([
-                "message" => "Data layanan umum tidak ditemukan"
-            ], 404);
-        }
+        // Query redundan dihapus
         $layananUmum->delete();
         return response()->json([
             "message" => "Data layanan umum berhasil dihapus"
