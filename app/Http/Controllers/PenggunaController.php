@@ -6,13 +6,15 @@ use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash; 
+use Illuminate\Support\Facades\Auth;
 
 class PenggunaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+public function index()
     {
         // Mengandalkan properti $hidden di Model User untuk menyembunyikan password
         $pengguna = Pengguna::all();

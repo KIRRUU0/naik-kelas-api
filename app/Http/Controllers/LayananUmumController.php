@@ -13,8 +13,8 @@ class LayananUmumController extends Controller
      */
     public function index()
     {
-        $layananUmum = LayananUmum::all();
-        return response()->json([
+    $layananUmum = LayananUmum::with('kategori')->get();
+    return response()->json([
         "message" => "Data layanan umum berhasil diambil",
         "data" => $layananUmum
         ], 200);

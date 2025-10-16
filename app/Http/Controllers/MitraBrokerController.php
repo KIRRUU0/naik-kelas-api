@@ -13,7 +13,7 @@ class MitraBrokerController extends Controller
      */
     public function index()
     {
-        $mitraBrokers = MitraBroker::all();
+        $mitraBrokers = MitraBroker::with('kategori')->get();
         return response()->json([
         "message" => "Data mitra broker berhasil diambil",
         "data" => $mitraBrokers

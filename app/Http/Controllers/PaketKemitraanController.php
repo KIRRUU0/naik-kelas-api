@@ -13,7 +13,7 @@ class PaketKemitraanController extends Controller
      */
     public function index()
     {
-        $paketKemitraan = PaketKemitraan::all();
+        $paketKemitraan = PaketKemitraan::with('kategori')->get();
         return response()->json([
         "message" => "Data paket kemitraan berhasil diambil",
         "data" => $paketKemitraan

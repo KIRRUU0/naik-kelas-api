@@ -11,6 +11,7 @@ use App\Http\Controllers\PaketKemitraanController;
 use App\Http\Controllers\MitraBrokerController;
 use App\Http\Controllers\HomeController; 
 use App\Http\Controllers\TentangController;
+use App\Http\Controllers\KategoriBisnisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::get('webinar/statistik', [WebinarController::class, 'statistik']);
 
 // Rute READ Publik (GET index & show) - Hanya rute yang memang untuk publik
 Route::apiResource('webinar', WebinarController::class)->only(['index', 'show']);
+Route::apiResource('kategori-bisnis', KategoriBisnisController::class)->only(['index', 'show']);
 Route::apiResource('layanan-bisnis', LayananBisnisController::class)->only(['index', 'show']);
 Route::apiResource('layanan-umum', LayananUmumController::class)->only(['index', 'show']);
 Route::apiResource('lowongan-karir', LowonganKarirController::class)->only(['index', 'show']);
@@ -60,6 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Rute CUD (Create, Update, Delete) untuk resource yang indeks/shownya publik
     Route::apiResource('webinar', WebinarController::class)->except(['index', 'show']);
+    Route::apiResource('kategori-bisnis', KategoriBisnisController::class)->except(['index', 'show']);
     Route::apiResource('layanan-bisnis', LayananBisnisController::class)->except(['index', 'show']);
     Route::apiResource('layanan-umum', LayananUmumController::class)->except(['index', 'show']);
     Route::apiResource('lowongan-karir', LowonganKarirController::class)->except(['index', 'show']);

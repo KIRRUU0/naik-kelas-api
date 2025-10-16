@@ -47,13 +47,16 @@ class LayananBisnisController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LayananBisnis $layananBisnis) // RMD aktif
+    public function show($id) 
     {
-        $layananBisnis->load('kategori'); // Memuat relasi
-        
+        $layananBisnis = LayananBisnis::with('kategori')->find($id);
+
+        if (is_null($layananBisnis)) {
+            return response()->json(["message" => "Data tidak ditemukan"], 404);
+        }
         return response()->json([
             "message" => "Data modul bisnis berhasil diambil",
-            "data" => $layananBisnis
+            "data" => $layananBisnis->toArray() 
         ], 200);
     }
 

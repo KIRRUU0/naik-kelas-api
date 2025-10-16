@@ -14,8 +14,8 @@ class WebinarController extends Controller
      */
     public function index()
     {
-        $webinar = Webinar::orderBy('tanggal_acara', 'desc')->get();
-        return response()->json([
+    $webinar = Webinar::with('kategori')->orderBy('tanggal_acara', 'desc')->get();
+    return response()->json([
         "message" => "Data webinar berhasil diambil",
         "data" => $webinar
         ], 200);

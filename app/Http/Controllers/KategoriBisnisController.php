@@ -32,15 +32,27 @@ class KategoriBisnisController extends Controller
             'deskripsi' => 'required',
         ]);
         
-        if ($validator->fails()) { // FIX: Menambahkan logic store yang hilang
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
         
-        $kategoriBisnis = KategoriBisnis::create($request->all());
-        return response()->json([
-            "message" => "Data kategori bisnis berhasil ditambahkan",
-            "data" => $kategoriBisnis
-        ], 201);
+        // GANTI LOGIC CREATE DENGAN METODE SAVE EKSPLISIT:
+        $kategoriBisnis = new KategoriBisnis();
+        $kategoriBisnis->kategori_id = $request->kategori_id;
+        $kategoriBisnis->nama_kategori = $request->nama_kategori;
+        $kategoriBisnis->gambar = $request->gambar;
+        $kategoriBisnis->deskripsi = $request->deskripsi;
+        
+        // Coba simpan data dan cek hasilnya
+        if ($kategoriBisnis->save()) {
+            return response()->json([
+                "message" => "Data kategori bisnis berhasil ditambahkan",
+                "data" => $kategoriBisnis
+            ], 201);
+        } else {
+            // Jika save() mengembalikan false (silent failure)
+            return response()->json(["message" => "Gagal menyimpan data ke database, coba lagi."], 500);
+        }
     }
 
     /**
