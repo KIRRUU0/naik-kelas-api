@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LayananBisnis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB; // <-- BARIS BARU: Import DB Facade
 
 class LayananBisnisController extends Controller
 {
@@ -13,6 +14,7 @@ class LayananBisnisController extends Controller
      */
     public function index()
     {
+        // PERBAIKAN: Eager Loading untuk mencegah N+1
         $modul = LayananBisnis::with('kategori')->get();
         return response()->json([
         "message" => "Data modul bisnis berhasil diambil",
@@ -26,7 +28,7 @@ class LayananBisnisController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'kategori_id' => 'required',
+            'kategori_id' => 'required|integer',
             'judul_bisnis' => 'required',
             'deskripsi' => 'required',
             'fitur_unggulan' => 'required',
@@ -36,6 +38,7 @@ class LayananBisnisController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+        
         $modul = LayananBisnis::create($request->all());
 
         return response()->json([
@@ -47,13 +50,11 @@ class LayananBisnisController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id) 
+    public function show(LayananBisnis $layananBisnis)
     {
-        $layananBisnis = LayananBisnis::with('kategori')->find($id);
-
-        if (is_null($layananBisnis)) {
-            return response()->json(["message" => "Data tidak ditemukan"], 404);
-        }
+        // Menggunakan toArray() untuk memastikan semua atribut Model dikembalikan
+        $layananBisnis->load('kategori');
+        
         return response()->json([
             "message" => "Data modul bisnis berhasil diambil",
             "data" => $layananBisnis->toArray() 
@@ -63,24 +64,35 @@ class LayananBisnisController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LayananBisnis $layananBisnis) // PERBAIKAN: Mengganti parameter model yang salah
+    public function update(Request $request, LayananBisnis $layananBisnis)
     {
-        // Query redundan dihapus
-
+        // FIX: Mengubah semua validasi menjadi 'sometimes|required' untuk partial update
         $validator = Validator::make($request->all(), [
-            'kategori_id' => 'required',
-            'judul_bisnis' => 'required',
-            'deskripsi' => 'required',
-            'fitur_unggulan' => 'required',
-            'url_cta' => 'required',
+            'kategori_id' => 'sometimes|required|integer',
+            'judul_bisnis' => 'sometimes|required',
+            'deskripsi' => 'sometimes|required',
+            'fitur_unggulan' => 'sometimes|required',
+            'url_cta' => 'sometimes|required',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        $layananBisnis->update($request->all()); // Menggunakan model yang sudah di-bind
+        // PERBAIKAN AKHIR UNTUK SILENT FAILURE
+        // 1. Ambil hanya field yang dikirim di request
+        $dataToUpdate = $request->only([
+            'kategori_id', 'judul_bisnis', 'deskripsi', 'fitur_unggulan', 'url_cta'
+        ]);
 
+        // 2. Gunakan DB Facade (Query Builder) untuk update eksplisit
+        DB::table('layanan_bisnis')
+            ->where('id', $layananBisnis->id)
+            ->update($dataToUpdate);
+
+        // 3. Muat ulang model dari DB untuk dikembalikan di respons
+        $layananBisnis->refresh(); 
+        
         return response()->json([
             "message" => "Data modul bisnis berhasil diupdate",
             "data" => $layananBisnis
@@ -90,7 +102,7 @@ class LayananBisnisController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LayananBisnis $layananBisnis) // RMD aktif
+    public function destroy(LayananBisnis $layananBisnis)
     {
         $layananBisnis->delete();
         return response()->json([
