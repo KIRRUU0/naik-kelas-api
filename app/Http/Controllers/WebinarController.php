@@ -43,7 +43,7 @@ class WebinarController extends Controller
         $webinar = Webinar::create($request->all());
 
         return response()->json([
-            "message" => "Data webinar berhasil ditambahkan",
+            "message" => "Data webinar berhasil ditambahkan",   
             "data" => $webinar
         ], 201);
     }
