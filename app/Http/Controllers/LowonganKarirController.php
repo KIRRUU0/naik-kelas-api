@@ -59,10 +59,10 @@ class LowonganKarirController extends Controller
     public function update(Request $request, LowonganKarir $lowonganKarir) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
-            'posisi' => 'required',
-            'status' => 'required',
-            'deskripsi' => 'required',
-            'url_cta' => 'required',
+            'posisi' => 'sometimes|required', // FIX: sometimes
+            'status' => 'sometimes|required|integer', // FIX: sometimes
+            'deskripsi' => 'sometimes|required', // FIX: sometimes
+            'url_cta' => 'sometimes|required', // FIX: sometimes
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

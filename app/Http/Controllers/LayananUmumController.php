@@ -60,19 +60,18 @@ class LayananUmumController extends Controller
     public function update(Request $request, LayananUmum $layananUmum) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
-            'kategori_id' => 'sometimes|required|integer',
-            'judul_layanan' => 'required',
-            'deskripsi' => 'required',
-            'highlight' => 'required',
-            'url_cta' => 'required',
+            'kategori_id' => 'sometimes|required|integer', // FIX: sometimes
+            'judul_layanan' => 'sometimes|required',        // FIX: sometimes
+            'deskripsi' => 'sometimes|required',            // FIX: sometimes
+            'highlight' => 'sometimes|required',            // FIX: sometimes
+            'url_cta' => 'sometimes|required',              // FIX: sometimes
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        // Query redundan dihapus
-        $layananUmum->update($request->all()); // Langsung update model yang sudah di-bind
+        $layananUmum->update($request->all());
         return response()->json([
             "message" => "Data layanan umum berhasil diupdate",
             "data" => $layananUmum

@@ -63,18 +63,19 @@ class PaketKemitraanController extends Controller
     public function update(Request $request, PaketKemitraan $paketKemitraan) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
-            'kategori_id' => 'required',
-            'nama_paket' => 'required',
-            'gambar' => 'required',
-            'deskripsi' => 'required',
-            'status' => 'required',
-            'url_cta' => 'required',
+            'kategori_id' => 'sometimes|required|integer', // FIX: sometimes dan integer
+            'nama_paket' => 'sometimes|required', // FIX: sometimes
+            'gambar' => 'sometimes|required', // FIX: sometimes
+            'deskripsi' => 'sometimes|required', // FIX: sometimes
+            'fitur_unggulan' => 'sometimes|required', // FIX: sometimes
+            'harga' => 'sometimes|required|integer', // FIX: sometimes dan integer
+            'status' => 'sometimes|required|integer', // FIX: sometimes dan integer
+            'url_cta' => 'sometimes|required', // FIX: sometimes
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
         
-        // Query redundan dihapus
         $paketKemitraan->update($request->all());
         return response()->json([
             "message" => "Data paket kemitraan berhasil diupdate",

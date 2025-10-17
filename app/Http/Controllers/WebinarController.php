@@ -66,18 +66,18 @@ class WebinarController extends Controller
     public function update(Request $request, Webinar $webinar) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
-            'kategori_id' => 'required',
-            'status_acara' => 'required',
-            'judul_webinar' => 'required',
-            'nama_mentor' => 'required',
-            'tanggal_acara' => 'required',
-            'waktu_mulai' => 'required',
-            'url_cta' => 'required',
+            'kategori_id' => 'sometimes|required|integer', // FIX: sometimes dan integer
+            'status_acara' => 'sometimes|required|integer', // FIX: sometimes dan integer
+            'judul_webinar' => 'sometimes|required', // FIX: sometimes
+            'nama_mentor' => 'sometimes|required', // FIX: sometimes
+            'tanggal_acara' => 'sometimes|required', // FIX: sometimes
+            'waktu_mulai' => 'sometimes|required', // FIX: sometimes
+            'url_cta' => 'sometimes|required', // FIX: sometimes
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $webinar->update($request->all()); // Langsung update model yang sudah di-bind
+        $webinar->update($request->all()); 
         return response()->json([
             "message" => "Data webinar berhasil diupdate",
             "data" => $webinar

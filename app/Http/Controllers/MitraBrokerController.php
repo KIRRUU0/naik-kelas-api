@@ -64,14 +64,14 @@ class MitraBrokerController extends Controller
     public function update(Request $request, MitraBroker $mitraBroker) // RMD aktif
     {
         $validator = Validator::make($request->all(), [
-            'tipe_broker' => 'required|integer',
-            'kategori_id' => 'required|integer',
-            'judul_broker' => 'required', // FIX: Menambahkan validasi field 'judul_broker'
-            'gambar' => 'required',
-            'nama_kategori' => 'required',
-            'deskripsi' => 'required',
-            'fitur_unggulan' => 'required|integer',
-            'url_cta' => 'required',
+            'tipe_broker' => 'sometimes|required|integer', // FIX: sometimes
+            'kategori_id' => 'sometimes|required|integer', // FIX: sometimes
+            'judul_broker' => 'sometimes|required', // FIX: sometimes
+            'gambar' => 'sometimes|required', // FIX: sometimes
+            'nama_kategori' => 'sometimes|required', // FIX: sometimes
+            'deskripsi' => 'sometimes|required', // FIX: sometimes
+            'fitur_unggulan' => 'sometimes|required|integer', // FIX: sometimes
+            'url_cta' => 'sometimes|required', // FIX: sometimes
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
