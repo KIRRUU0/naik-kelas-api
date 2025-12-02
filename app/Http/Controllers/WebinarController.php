@@ -31,7 +31,6 @@ class WebinarController extends Controller
             'kategori_id' => 'required|integer|exists:kategori_bisnis,id', // Tambah: Cek FK valid
             'status_acara' => 'required|integer',
             'judul_webinar' => 'required',
-            'nama_mentor' => 'required',
             'tanggal_acara' => 'required|date',
             'waktu_mulai' => 'required|date_format:Y-m-d H:i:s', // Contoh format datetime
             'url_cta' => 'required',

@@ -16,9 +16,9 @@ class LayananBisnisController extends Controller
     private function getUploadBasePath()
     {
         // ✅ Untuk hosting environment (public_html/upload/layanan-bisnis/)
-        return base_path('../public_html/upload/layanan-bisnis/');
+        return base_path('../../upload/layanan-bisnis/');
     }
-
+ 
     /**
      * Display a listing of the resource.
      */
@@ -46,7 +46,7 @@ class LayananBisnisController extends Controller
     {
         $validator = Validator::make($request->all(), [
         'kategori_id' => 'sometimes|nullable|integer',
-        'type' => 'required|in:trading,webinar,reseller,modal bisnis',
+        'type' => 'required|in:trading,webinar,jasa recurment,modal bisnis',
         'tipe_broker' => 'required_if:type,trading',
         'judul_bisnis' => 'required',
         'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -54,10 +54,8 @@ class LayananBisnisController extends Controller
         'fitur_unggulan' => 'required',
         'harga' => 'nullable|integer',
         'url_cta' => 'required',
-        // ✅ FIELD KHUSUS WEBINAR
         'tanggal_acara' => 'required_if:type,webinar|date',
         'waktu_mulai' => 'required_if:type,webinar',
-        'nama_mentor' => 'required_if:type,webinar',
     ]);
     
         if ($validator->fails()) {
@@ -233,7 +231,7 @@ class LayananBisnisController extends Controller
 
     $validator = Validator::make($request->all(), [
         'kategori_id' => 'sometimes|nullable|integer',
-        'type' => 'sometimes|required|in:trading,webinar,reseller,modal bisnis',
+        'type' => 'required|in:trading,webinar,jasa recurment,modal bisnis',
         'tipe_broker' => 'sometimes|required_if:type,trading',
         'judul_bisnis' => 'sometimes|required',
         'gambar' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -243,7 +241,6 @@ class LayananBisnisController extends Controller
         'url_cta' => 'sometimes|required',
         'tanggal_acara' => 'sometimes|required_if:type,webinar|date',
         'waktu_mulai' => 'sometimes|required_if:type,webinar',
-        'nama_mentor' => 'sometimes|required_if:type,webinar',
     ]);
 
     if ($validator->fails()) {

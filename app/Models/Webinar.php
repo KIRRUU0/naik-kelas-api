@@ -14,15 +14,11 @@ class Webinar extends Model
         'kategori_id',
         'status_acara',
         'judul_webinar',
-        'nama_mentor',
         'tanggal_acara',
         'waktu_mulai',
         'url_cta',
     ];
     public $timestamps = false;
 
-    public function kategori()
-    {
-        return $this->belongsTo(KategoriBisnis::class, 'kategori_id');
-    }
+   
 }

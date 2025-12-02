@@ -14,8 +14,20 @@ class LayananUmum extends Model
         // 'kategori_id',
         'judul_layanan',
         'deskripsi',
+        'gambar',
         'highlight',
         'url_cta',
     ];
+
+    protected $appends = ['gambar_url'];
     public $timestamps = false;
+    public function getGambarUrlAttribute()
+    {
+        if (!$this->gambar) {
+            return null;
+        }
+        
+        // ✅ URL yang BENAR untuk struktur hosting
+        return url('upload/layanan-umum/' . $this->gambar);
+    }
 }

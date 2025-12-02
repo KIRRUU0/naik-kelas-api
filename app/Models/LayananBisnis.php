@@ -23,7 +23,6 @@ class LayananBisnis extends Model
         'url_cta',
         'tanggal_acara',  // ✅ TAMBAHKAN
         'waktu_mulai',    // ✅ TAMBAHKAN  
-        'nama_mentor'
     ];
 
     // ✅ TAMBAHKAN ACCESSOR untuk URL gambar otomatis

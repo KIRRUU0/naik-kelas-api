@@ -29,6 +29,7 @@ class LayananUmumController extends Controller
             // 'kategori_id' => 'required|integer',
             'judul_layanan' => 'required',
             'deskripsi' => 'required',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'highlight' => 'nullable|string|max:100',
             'url_cta' => 'required',
         ]);
@@ -63,6 +64,7 @@ class LayananUmumController extends Controller
             // 'kategori_id' => 'sometimes|required|integer', // FIX: sometimes
             'judul_layanan' => 'sometimes|required',        // FIX: sometimes
             'deskripsi' => 'sometimes|required',            // FIX: sometimes
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // FIX: sometimes
            'highlight' => 'sometimes|required|string|max:100',            // FIX: sometimes
             'url_cta' => 'sometimes|required',              // FIX: sometimes
         ]);
