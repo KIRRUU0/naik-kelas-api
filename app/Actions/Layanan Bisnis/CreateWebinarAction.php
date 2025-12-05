@@ -15,12 +15,8 @@ class CreateWebinarAction
             'type' => 'required|in:webinar',
             'judul_bisnis' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            
-            // Field Webinar Spesifik: Tanggal dan Waktu
             'tanggal_acara' => 'required|date_format:Y-m-d',
             'waktu_mulai' => 'required|date_format:H:i:s', // Asumsi frontend mengirim HH:MM:SS
-            'nama_mentor' => 'required|string|max:255',
-            
             'fitur_unggulan' => 'nullable|string', // Dapat diisi dengan Nama Mentor
             'url_cta' => 'required|url',
         ]);

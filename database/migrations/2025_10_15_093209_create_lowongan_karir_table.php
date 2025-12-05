@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('lowongan_karir', function (Blueprint $table) {
             $table->id();
             $table->string('posisi', 255);
-            $table->string('status', 20);
             $table->text('deskripsi');
             $table->string('url_cta', 255);
             $table->enum('status', ['dibuka', 'ditutup']);

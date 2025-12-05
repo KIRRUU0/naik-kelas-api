@@ -12,7 +12,7 @@ class LayananBisnis extends Model
     protected $table = 'layanan_bisnis';
     
     protected $fillable = [
-        'kategori_id',
+        // 'kategori_id',
         'type', 
         'tipe_broker',
         'judul_bisnis',

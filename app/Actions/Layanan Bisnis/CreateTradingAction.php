@@ -17,7 +17,6 @@ class CreateTradingAction
             'tipe_broker' => 'required|in:' . implode(',', [TipeBroker::NASIONAL->value, TipeBroker::INTERNASIONAL->value]),
             'judul_bisnis' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'fitur_unggulan' => 'required|string', // Komisi, Keamanan, dll.
             'url_cta' => 'required|url',
         ]);
 

@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
         // Panggil semua Seeder kustom yang baru dibuat
         $this->call([
             PenggunaSeeder::class,
-            KategoriBisnisSeeder::class,
             InitialDataSeeder::class,
         ]);
 

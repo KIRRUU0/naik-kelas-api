@@ -13,6 +13,7 @@ return new class extends Migration
             // $table->unsignedBigInteger('kategori_id');
             $table->string('judul_layanan', 50);
             $table->text('deskripsi');
+            $table->string('gambar', 255)->nullable();
             $table->string('highlight', 255)->nullable();
             $table->string('url_cta', 255);
         });

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('foto_profil')->nullable();
-            $table->enum('role', ['super_admin', 'admin', 'user'])->default('pengguna');
+            $table->enum('role', ['super_admin', 'admin', 'user'])->default('user');
             // Kolom rememberToken, email_verified_at, dan timestamps dihapus karena Model menggunakan $timestamps = false
         });
 

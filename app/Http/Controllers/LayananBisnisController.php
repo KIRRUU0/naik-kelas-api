@@ -46,7 +46,7 @@ class LayananBisnisController extends Controller
     {
         $validator = Validator::make($request->all(), [
         'kategori_id' => 'sometimes|nullable|integer',
-        'type' => 'required|in:trading,webinar,jasa recurment,modal bisnis',
+        'type' => 'required|in:trading,webinar,jasa_recruitment,modal_bisnis',
         'tipe_broker' => 'required_if:type,trading',
         'judul_bisnis' => 'required',
         'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -231,7 +231,7 @@ class LayananBisnisController extends Controller
 
     $validator = Validator::make($request->all(), [
         'kategori_id' => 'sometimes|nullable|integer',
-        'type' => 'required|in:trading,webinar,jasa recurment,modal bisnis',
+        'type' => 'required|in:trading,webinar,jasa_recruitment,modul_bisnis',
         'tipe_broker' => 'sometimes|required_if:type,trading',
         'judul_bisnis' => 'sometimes|required',
         'gambar' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:2048',

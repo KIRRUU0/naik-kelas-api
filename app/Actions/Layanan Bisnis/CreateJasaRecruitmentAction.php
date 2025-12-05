@@ -6,15 +6,15 @@ use App\Models\LayananBisnis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CreateResellerAction
+class CreateJasaRecruitmentAction
 {
     public function execute(Request $request)
     {
         // Validasi KHUSUS untuk Layanan Reseller
         $validator = Validator::make($request->all(), [
+            'type' => 'required|in:jasa_recruitment',
             'judul_bisnis' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'harga' => 'required|integer', // Harga paket reseller
             'fitur_unggulan' => 'nullable|string', // Contoh: Persentase Komisi
             'url_cta' => 'required|url',
         ]);
@@ -24,12 +24,12 @@ class CreateResellerAction
         }
         
         $data = $validator->validated();
-        $data['judul_bisnis'] = '[RESELLER] ' . $data['judul_bisnis']; 
+        $data['judul_bisnis'] = '[JASARECRUIMENT] ' . $data['judul_bisnis']; 
 
         $layanan = LayananBisnis::create($data);
 
         return response()->json([
-            "message" => "Layanan Reseller berhasil ditambahkan",
+            "message" => "Layanan Jasa Recruitment berhasil ditambahkan",
             "data" => $layanan
         ], 201);
     }

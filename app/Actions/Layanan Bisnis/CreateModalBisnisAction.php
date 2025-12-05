@@ -12,9 +12,9 @@ class CreateModalBisnisAction
     {
         // Validasi KHUSUS untuk Layanan Kelas/Pelatihan
         $validator = Validator::make($request->all(), [
+            'type' => 'required|in:modal_bisnis',
             'judul_bisnis' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'harga' => 'required|integer', // Harga Modal
             'fitur_unggulan' => 'required|string', 
             'url_cta' => 'required|url',
         ]);
