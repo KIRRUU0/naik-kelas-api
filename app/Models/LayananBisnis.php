@@ -21,8 +21,6 @@ class LayananBisnis extends Model
         'fitur_unggulan',
         'harga',
         'url_cta',
-        'tanggal_acara',  // ✅ TAMBAHKAN
-        'waktu_mulai',    // ✅ TAMBAHKAN  
     ];
 
     // ✅ TAMBAHKAN ACCESSOR untuk URL gambar otomatis

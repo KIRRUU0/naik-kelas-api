@@ -8,9 +8,10 @@ use App\Http\Controllers\LayananUmumController;
 use App\Http\Controllers\LowonganKarirController;
 use App\Http\Controllers\PaketKemitraanController;
 use App\Http\Controllers\HomeController; 
-use App\Http\Controllers\TentangController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ArtikelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,12 +35,17 @@ Route::post('/kontak', [KontakController::class, 'store']);
 // Rute READ Publik (GET index & show)
 Route::get('home', [HomeController::class, 'index']); 
 Route::get('home/{id}', [HomeController::class, 'show']);
-Route::get('tentang', [TentangController::class, 'index']);
-Route::get('tentang/{id}', [TentangController::class, 'show']);
 Route::apiResource('layanan-bisnis', LayananBisnisController::class)->only(['index', 'show']);
 Route::apiResource('layanan-umum', LayananUmumController::class)->only(['index', 'show']);
 Route::apiResource('lowongan-karir', LowonganKarirController::class)->only(['index', 'show']);
 Route::apiResource('paket-kemitraan', PaketKemitraanController::class)->only(['index', 'show']);
+Route::apiResource('event', EventController::class)->only(['index', 'show']);
+Route::apiResource('artikel', ArtikelController::class)->only(['index', 'show']);
+
+Route::prefix('article')->group(function () {
+    Route::get('/', [ArtikelController::class, 'index']);
+    Route::get('/{identifier}', [ArtikelController::class, 'show']);
+});
 
 // =========================================================================
 // 2. RUTE TERLINDUNGI (Middleware: auth:sanctum)
@@ -77,8 +83,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // ---------------------------------------------------------------------
     // RUTE ADMIN & SUPER ADMIN (Update pengguna)
+    // Admin bisa update diri sendiri, super_admin bisa update semua
     // ---------------------------------------------------------------------
     Route::middleware('role:admin,super_admin')->group(function () {
+        // ✅ UPDATE PENGGUNA: admin bisa update diri sendiri, super_admin bisa update semua
         Route::post('pengguna/{id}', [PenggunaController::class, 'update']); 
     });
 
@@ -96,41 +104,42 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // Route khusus untuk home
         Route::post('home/{home}/upload-brand', [HomeController::class, 'uploadBrand']);
         Route::put('home/{home}/content', [HomeController::class, 'updateContent']);
-        
-        // TENTANG Routes
-        Route::put('tentang', [TentangController::class, 'update']);
-        Route::post('tentang', [TentangController::class, 'store']);
-        Route::delete('tentang/{tentang}', [TentangController::class, 'destroy']);
-        
-        // ✅ Route khusus untuk tentang (TAMBAHAN BARU)
-        Route::post('tentang/{tentang}/upload-image', [TentangController::class, 'uploadImage']);
-        Route::put('tentang/{tentang}/content', [TentangController::class, 'updateContent']);
 
-        // ✅ RUTE LAYANAN BISNIS YANG DIPERBAIKI
+        // RUTE LAYANAN BISNIS
         Route::post('layanan-bisnis', [LayananBisnisController::class, 'store']);
-        Route::post('layanan-bisnis/{layanan_bisnis}', [LayananBisnisController::class, 'update']); // ✅ UBAH KE POST
+        Route::post('layanan-bisnis/{layanan_bisnis}', [LayananBisnisController::class, 'update']);
         Route::delete('layanan-bisnis/{layanan_bisnis}', [LayananBisnisController::class, 'destroy']);
 
-        // Resource lainnya tetap pakai apiResource
+        // Resource lainnya
         Route::apiResource('layanan-umum', LayananUmumController::class)->except(['index', 'show']);
         Route::apiResource('lowongan-karir', LowonganKarirController::class)->except(['index', 'show']);
         
         // paket-kemitraan
         Route::post('paket-kemitraan', [PaketKemitraanController::class, 'store']);
-        Route::post('paket-kemitraan/{id}', [PaketKemitraanController::class, 'update']); // ✅ POST untuk update
+        Route::post('paket-kemitraan/{id}', [PaketKemitraanController::class, 'update']);
         Route::delete('paket-kemitraan/{id}', [PaketKemitraanController::class, 'destroy']);
+
+        // Event
+        Route::post('event', [EventController::class, 'store']);
+        Route::post('event/{id}', [EventController::class, 'update']);
+        Route::delete('event/{id}', [EventController::class, 'destroy']);
+
+        // Artikel
+        Route::post('artikel', [ArtikelController::class, 'store']);
+        Route::post('artikel/{id}', [ArtikelController::class, 'update']);
+        Route::delete('artikel/{id}', [ArtikelController::class, 'destroy']);
 
         // DELETE by type
         Route::delete('/layanan-bisnis/delete-by-type', [LayananBisnisController::class, 'deleteByType']);
         
         // PESAN KONTAK
+        Route::get('/kontak/jenis-layanan', [KontakController::class, 'getJenisLayanan']);
         Route::get('/kontak', [KontakController::class, 'index']);
         Route::get('/kontak/unread', [KontakController::class, 'unreadMessages']);
         Route::get('/kontak/{id}', [KontakController::class, 'show']);
         Route::put('/kontak/{id}/baca', [KontakController::class, 'markAsRead']);
         Route::put('/kontak/mark-all-read', [KontakController::class, 'markAllAsRead']);
         Route::delete('/kontak/{id}', [KontakController::class, 'destroy']);
-        
     });
 });
 

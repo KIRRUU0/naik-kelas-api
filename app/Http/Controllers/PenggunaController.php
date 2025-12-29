@@ -266,108 +266,61 @@ class PenggunaController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {
-        
-        $pengguna = Pengguna::find($id);
+{
+    $currentUser = auth()->user();
+    $targetUser = Pengguna::findOrFail($id);
     
-    if (!$pengguna) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Data pengguna tidak ditemukan'
-        ], 404);
-    }
-    
-        // Cek autentikasi
-        if (!Auth::check()) {
+    // ✅ LOGIC: Admin hanya bisa update diri sendiri, super_admin bisa update semua
+    if ($currentUser->role === 'admin') {
+        // Admin hanya boleh update diri sendiri
+        if ($currentUser->id != $id) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Unauthorized. Silakan login terlebih dahulu.'
-            ], 401);
-        }
-
-        $currentUser = Auth::user();
-        
-        // Authorization check
-        if ($currentUser->role === 'admin' && $pengguna->role === 'super_admin') {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Admin tidak dapat mengupdate Super Admin'
+                'message' => 'Admin hanya bisa mengupdate profile sendiri'
             ], 403);
         }
-
-        if ($currentUser->role !== 'super_admin' && $currentUser->id !== $pengguna->id) {
+        
+        // Admin tidak boleh mengubah role
+        if ($request->has('role') && $request->role !== 'admin') {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Anda hanya dapat mengupdate profil sendiri'
+                'message' => 'Admin tidak bisa mengubah role'
             ], 403);
         }
-
-        // Validation rules
-        $validationRules = [
-            'nama' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:pengguna,email,'.$pengguna->id,
-            'password' => 'sometimes|min:6',
-            'foto_profil' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-        ];
-
-        // Hanya super_admin yang bisa mengubah role
-        if ($currentUser->role === 'super_admin' && $currentUser->id !== $pengguna->id) {
-            $validationRules['role'] = 'sometimes|in:super_admin,admin';
-        }
-
-        $validator = Validator::make($request->all(), $validationRules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        try {
-            $data = $request->all();
-
-            // Handle password update
-            if ($request->filled('password')) {
-                $data['password'] = Hash::make($request->password);
-            } else {
-                unset($data['password']);
-            }
-
-            // Handle file upload
-            if ($request->hasFile('foto_profil')) {
-                // Hapus foto lama jika ada
-                if ($pengguna->foto_profil) {
-                    $this->deleteFotoProfil($pengguna->foto_profil);
-                }
-
-                // Simpan foto baru
-                $data['foto_profil'] = $this->uploadFotoProfil($request->file('foto_profil'));
-            }
-
-            // Jika bukan super_admin, jangan izinkan ubah role
-            if ($currentUser->role !== 'super_admin' && isset($data['role'])) {
-                unset($data['role']);
-            }
-
-            $pengguna->update($data);
-
-            return response()->json([
-                "status" => "success",
-                "message" => "Data pengguna berhasil diupdate",
-                "data" => $pengguna
-            ], 200);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan server',
-                'error' => $e->getMessage()
-            ], 500);
-        }
     }
-
+    
+    // Super_admin bisa update semua (tidak ada restriction)
+    
+    // Validasi
+    $validator = Validator::make($request->all(), [
+        'nama' => 'sometimes|string|max:255',
+        'email' => 'sometimes|email|unique:pengguna,email,' . $id,
+        'password' => 'sometimes|min:6|confirmed',
+        'role' => 'sometimes|in:user,admin,super_admin', // Hanya super_admin yang bisa ganti
+        'phone' => 'sometimes|string|max:20',
+        'address' => 'sometimes|string',
+        // tambahkan field lainnya sesuai kebutuhan
+    ]);
+    
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
+    }
+    
+    // Hash password jika ada
+    $data = $request->all();
+    if ($request->has('password')) {
+        $data['password'] = bcrypt($request->password);
+    }
+    
+    // Update user
+    $targetUser->update($data);
+    
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Data pengguna berhasil diupdate',
+        'data' => $targetUser->makeHidden(['password', 'remember_token'])
+    ], 200);
+}
     /**
      * Remove the specified resource from storage.
      */
@@ -392,12 +345,12 @@ class PenggunaController extends Controller
         }
 
         // Cegah penghapusan diri sendiri
-        if ($currentUser->id === $pengguna->id) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Tidak dapat menghapus akun sendiri'
-            ], 400);
-        }
+        if ($currentUser->id == $pengguna->id) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Tidak dapat menghapus akun sendiri'
+                ], 400);
+            }
 
         try {
             // Hapus foto profil jika ada

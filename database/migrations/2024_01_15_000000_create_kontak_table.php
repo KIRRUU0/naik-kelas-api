@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('nomor_telepon', 20)->nullable();
             $table->text('pesan');
             $table->timestamp('dibaca')->nullable();
+            $table->timestamp('dikirim')->useCurrent();
+            $table->string('jenis_layanan', 255);;
         });
     }
 

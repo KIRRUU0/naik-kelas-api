@@ -14,13 +14,17 @@ class Kontak extends Model
         'email', 
         'nomor_telepon',
         'pesan',
-        'dibaca' // tambahkan ini
+        'dibaca',
+        'jenis_layanan'
     ];
     
-    public $timestamps = false;
+    public $timestamps = true;
+    const CREATED_AT = 'dikirim';
+    const UPDATED_AT = null;
 
     protected $casts = [
-        'dibaca' => 'datetime'
+        'dibaca' => 'datetime',
+        'dikirim' => 'datetime'
     ];
 
     // Scope untuk pesan belum dibaca

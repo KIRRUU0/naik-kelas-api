@@ -18,8 +18,6 @@
                 $table->string('url_cta', 255);
                 $table->string('gambar')->nullable();
                 $table->integer('harga')->nullable()->default(null);
-                $table->date('tanggal_acara')->nullable();
-                $table->time('waktu_mulai')->nullable();
                 
                 // // TAMBAHAN KRITIS: DEFINISI FOREIGN KEY
                 // $table->foreign('kategori_id')

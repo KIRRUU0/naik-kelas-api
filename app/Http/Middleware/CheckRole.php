@@ -24,9 +24,10 @@ class CheckRole
         $user = $request->user();
 
         // 2. Periksa apakah role pengguna ada dalam daftar role yang diizinkan
-        if (! in_array($user->role, $roles)) {
-            // Jika role tidak diizinkan, kembalikan 403 Forbidden
-            return response()->json(['message' => 'Gunakan Role Admin atau Super Admin'], 403);
+        if (!in_array($user->role, $roles)) {
+            return response()->json([
+                'message' => 'Anda tidak memiliki izin untuk mengakses ini'
+            ], 403);
         }
 
         return $next($request);

@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class KontakController extends Controller
 {
+
+    const Jenis_Layanan = [
+        "Legalitas & Sertifikasi",
+        "Kemitraan F&B",
+        "Modul Bisnis",
+        "Trading & Komunitas",
+        "Webinar & Workshop",
+        "Konsultasi Bisnis",
+        "Lainnya"
+    ];
     /**
      * ✅ PUBLIC: Submit form kontak TANPA LOGIN
      * POST /api/v1/kontak
@@ -22,6 +32,8 @@ class KontakController extends Controller
             'email' => 'required|email|max:255',
             'nomor_telepon' => 'nullable|string|max:20',
             'pesan' => 'required|string|max:2000',
+            'jenis_layanan' => 'required|string|max:255|in:' . implode(',', self::Jenis_Layanan),
+            
         ]);
 
         if ($validator->fails()) {
@@ -40,7 +52,8 @@ class KontakController extends Controller
                 'nama' => $request->nama,
                 'email' => $request->email,
                 'nomor_telepon' => $request->nomor_telepon,
-                'pesan' => $request->pesan
+                'pesan' => $request->pesan,
+                'jenis_layanan' => $request->jenis_layanan
             ]);
 
             \Log::info('Kontak Created Successfully:', $kontak->toArray());
@@ -92,7 +105,7 @@ class KontakController extends Controller
         }
 
         // ✅ UBAH: Default sorting dari 'created_at' ke 'id'
-        $sortBy = $request->get('sort_by', 'id'); // GANTI 'created_at' -> 'id'
+         $sortBy = $request->get('sort_by', 'dikirim'); // GANTI 'created_at' -> 'id'
         $sortOrder = $request->get('sort_order', 'desc');
         $query->orderBy($sortBy, $sortOrder);
 
@@ -349,7 +362,13 @@ class KontakController extends Controller
                 'status' => 'error',
                 'message' => 'Terjadi kesalahan server: ' . $e->getMessage()
             ], 500);
-            \Log::info('Unread messages count: ' . $unreadMessages->count());
         }
+    }
+    public function getJenisLayanan()
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => self::Jenis_Layanan
+        ], 200);
     }
 }
